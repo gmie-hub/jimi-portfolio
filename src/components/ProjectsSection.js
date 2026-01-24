@@ -1,9 +1,22 @@
-import React from "react";
 import FullScreenSection from "./FullScreenSection";
 import { Box, Heading } from "@chakra-ui/react";
 import Card from "./Card";
 
 const projects = [
+  {
+    title: "Blinkers",
+    description:
+      "Blinkers is an e-commerce platform that allows users to buy and sell products.",
+    getImageSrc: "/blinkers.svg",
+    redirectUrl: "https://www.blinkersnigeria.com/",
+  },
+  {
+    title: "Spoilert",
+    description:
+      "Spoilert is an e-learning platform that provides a variety of courses for students.",
+    getImageSrc: "/auth-image-one.svg",
+    redirectUrl: "https://spoilert-web-app-vercel.vercel.app/",
+  },
   {
     title: "Lyte Wallet",
     description:
@@ -42,7 +55,7 @@ const projects = [
 
 const handleRedirect = (url) => {
   window.open(url, "_blank");
-}
+};
 
 const ProjectsSection = () => {
   return (
@@ -52,6 +65,7 @@ const ProjectsSection = () => {
       p={8}
       alignItems="flex-start"
       spacing={8}
+      py={{ md: 16 }}
     >
       <Heading as="h1" id="projects-section" fontFamily="Lato">
         Featured Projects
@@ -59,7 +73,7 @@ const ProjectsSection = () => {
 
       <Box
         display="grid"
-        gridTemplateColumns="repeat(2,minmax(0,1fr))"
+        gridTemplateColumns={{ md: "repeat(2,minmax(0,1fr))" }}
         gridGap={8}
       >
         {projects.map((project, index) => (

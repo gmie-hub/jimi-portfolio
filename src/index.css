@@ -10,11 +10,13 @@ body {
   font-family: "Lato", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 100%;
 }
 
 html {
   background-color: #18181b;
   font-family: "Lato", sans-serif;
+  width: 100%;
 }
 
 @font-face {

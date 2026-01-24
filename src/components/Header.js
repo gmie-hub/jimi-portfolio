@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
   faGithub,
   faLinkedin,
-  faMedium,
-  faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
 import { Box, HStack } from "@chakra-ui/react";
 
@@ -86,7 +84,7 @@ const Header = () => {
     >
       <Box color="white" maxWidth="1280px" margin="0 auto">
         <HStack
-          px={16}
+          px={{ base: 8, md: 16}}
           py={4}
           justifyContent="space-between"
           alignItems="center"
@@ -96,7 +94,7 @@ const Header = () => {
             <HStack spacing='8'>
               {socials.map((item) => (
                 <a key={item.url} href={item.url}>
-                  <FontAwesomeIcon icon={item.icon} size='2x' />
+                  <FontAwesomeIcon icon={item.icon} size={{ md: '2x'}} />
                 </a>
               ))}
             </HStack>
