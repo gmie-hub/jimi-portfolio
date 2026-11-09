@@ -6,19 +6,20 @@ import ContactMeSection from "./components/ContactMeSection";
 import Footer from "./components/Footer";
 import { AlertProvider } from "./context/alertContext";
 import Alert from "./components/Alert";
+import theme from "./theme";
 
 function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <AlertProvider>
+        <Header />
         <main>
-          <Header />
           <LandingSection />
           <ProjectsSection />
           <ContactMeSection />
-          <Footer />
-          <Alert />
         </main>
+        <Footer />
+        <Alert />
       </AlertProvider>
     </ChakraProvider>
   );

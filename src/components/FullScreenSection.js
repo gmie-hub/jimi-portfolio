@@ -1,17 +1,18 @@
-import { Stack, VStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
-const FullScreenSection = ({ children, isDarkBackground, ...boxProps }) => {
-  return (
-    <VStack
-      backgroundColor={boxProps.backgroundColor}
-      color={isDarkBackground ? "white" : "black"}
-      width="100%"
+/** Full-width section with a centred, padded content column. */
+const FullScreenSection = ({ children, id, bg, innerProps, ...rest }) => (
+  <Box as="section" id={id} position="relative" w="100%" bg={bg} {...rest}>
+    <Box
+      position="relative"
+      maxW="1200px"
+      mx="auto"
+      px={{ base: 4, sm: 6, md: 10 }}
+      {...innerProps}
     >
-      <VStack maxWidth="1280px" minHeight="100vh" {...boxProps}>
-        {children}
-      </VStack>
-    </VStack>
-  );
-};
+      {children}
+    </Box>
+  </Box>
+);
 
 export default FullScreenSection;

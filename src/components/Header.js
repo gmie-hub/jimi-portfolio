@@ -1,116 +1,114 @@
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import {
-  faGithub,
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
-import { Box, HStack } from "@chakra-ui/react";
-
-const socials = [
-  {
-    icon: faEnvelope,
-    url: "mailto: folagmie16@gmail.com",
-  },
-  {
-    icon: faGithub,
-    url: "https://github.com/gmie-hub",
-  },
-  {
-    icon: faLinkedin,
-    url: "https://www.linkedin.com/in/gmie-hub",
-  },
-  // {
-  //   icon: faMedium,
-  //   url: "https://medium.com",
-  // },
-  // {
-  //   icon: faStackOverflow,
-  //   url: "https://stackoverflow.com",
-  // },
-];
+import { Box, HStack, Link, Text } from "@chakra-ui/react";
+import { socials } from "../data";
+import { palette } from "../theme";
 
 const internalLinks = [
-  { id: 'projects', link: 'Projects', url: '#projects' },
-  { id: 'contactme', link: 'Contact Me', url: '#contact-me' },
+  { label: "Work", href: "#projects-section" },
+  { label: "Contact", href: "#contactme-section" },
 ];
 
 const Header = () => {
-  const [showHeader, setShowHeader] = useState(true);
-  const lastSCrollY = useRef(0);
+  const [visible, setVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const lastY = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY < lastSCrollY.current || currentScrollY < 50) {
-        setShowHeader(true);
-      } else {
-        setShowHeader(false);
-      }
-
-      lastSCrollY.current = currentScrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setVisible(y < lastY.current || y < 80);
+      setScrolled(y > 24);
+      lastY.current = y;
     };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [])
-
-  const handleClick = (anchor) => () => {
-    const id = `${anchor}-section`;
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <Box
+      as="header"
       position="fixed"
-      top={0}
+      top={{ base: 3, md: 5 }}
       left={0}
       right={0}
-      transform={showHeader ? "translateY(0)" : "translateY(-200px)"}
-      translateY={0}
-      transitionProperty="transform"
-      transitionDuration=".3s"
-      transitionTimingFunction="ease-in-out"
-      backgroundColor="#18181b"
-      zIndex="1000"
+      zIndex={1000}
+      px={{ base: 3, sm: 6 }}
+      transform={visible ? "translateY(0)" : "translateY(-140%)"}
+      transition="transform .4s cubic-bezier(.22,1,.36,1)"
     >
-      <Box color="white" maxWidth="1280px" margin="0 auto">
-        <HStack
-          px={{ base: 8, md: 16}}
-          py={4}
-          justifyContent="space-between"
-          alignItems="center"
+      <HStack
+        maxW="1100px"
+        mx="auto"
+        justify="space-between"
+        pl={{ base: 4, md: 6 }}
+        pr={{ base: 2, md: 2 }}
+        py={2}
+        borderRadius="full"
+        border="1px solid"
+        borderColor={scrolled ? palette.lineHi : "transparent"}
+        bg={scrolled ? "rgba(18,18,22,0.72)" : "transparent"}
+        backdropFilter={scrolled ? "blur(14px) saturate(140%)" : "none"}
+        transition="all .3s ease"
+      >
+        <Link
+          href="#top"
+          _hover={{ textDecoration: "none" }}
+          fontWeight={700}
+          fontSize="lg"
+          letterSpacing="-0.02em"
         >
-          <nav>
-            {/* Add social media links based on the `socials` data */}
-            <HStack spacing='8'>
-              {socials.map((item) => (
-                <a key={item.url} href={item.url}>
-                  <FontAwesomeIcon icon={item.icon} size={{ md: '2x'}} />
-                </a>
-              ))}
-            </HStack>
-          </nav>
-          
-          <nav>
-            <HStack spacing={8}>
-              {/* Add links to Projects and Contact me section */}
-              {internalLinks.map((item) => (
-                <a key={item.id} onClick={handleClick(item.id)} href={item.url}>{item.link}</a>
-              ))}
-            </HStack>
-          </nav>
+          Jimi<Text as="span" color={palette.accent}>.</Text>
+        </Link>
+
+        <HStack spacing={{ base: 1, md: 2 }}>
+          <HStack spacing={1} display={{ base: "none", sm: "flex" }} mr={2}>
+            {socials.map((s) => (
+              <Link
+                key={s.url}
+                href={s.url}
+                isExternal={!s.url.startsWith("mailto")}
+                aria-label={s.label}
+                color={palette.muted}
+                w={9}
+                h={9}
+                display="grid"
+                placeItems="center"
+                borderRadius="full"
+                _hover={{ color: palette.text, bg: "whiteAlpha.100" }}
+              >
+                <FontAwesomeIcon icon={s.icon} />
+              </Link>
+            ))}
+          </HStack>
+
+          {internalLinks.map((l, i) => {
+            const primary = i === internalLinks.length - 1;
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                fontSize="sm"
+                fontWeight={600}
+                px={4}
+                py={2}
+                borderRadius="full"
+                color={primary ? palette.accentInk : palette.text}
+                bg={primary ? palette.accent : "transparent"}
+                _hover={{
+                  textDecoration: "none",
+                  bg: primary ? "#D6FA6A" : "whiteAlpha.100",
+                }}
+                transition="background .2s ease"
+              >
+                {l.label}
+              </Link>
+            );
+          })}
         </HStack>
-      </Box>
+      </HStack>
     </Box>
   );
 };
+
 export default Header;

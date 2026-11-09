@@ -1,91 +1,69 @@
+import { Box, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import FullScreenSection from "./FullScreenSection";
-import { Box, Heading } from "@chakra-ui/react";
 import Card from "./Card";
+import Reveal from "./Reveal";
+import { projects } from "../data";
+import { palette } from "../theme";
 
-const projects = [
-  {
-    title: "Blinkers",
-    description:
-      "Blinkers is an e-commerce platform that allows users to buy and sell products.",
-    getImageSrc: "/blinkers.svg",
-    redirectUrl: "https://www.blinkersnigeria.com/",
-  },
-  {
-    title: "Spoilert",
-    description:
-      "Spoilert is an e-learning platform that provides a variety of courses for students.",
-    getImageSrc: "/auth-image-one.svg",
-    redirectUrl: "https://spoilert-web-app-vercel.vercel.app/",
-  },
-  {
-    title: "Lyte Wallet",
-    description:
-      "Developed a cryptocurrency wallet with real-time currency swap, send and receiving, with automated rate updates, and transaction tracking.",
-    getImageSrc: "/lyte-app.png",
-    redirectUrl: "https://lytewallet.io/",
-  },
-  {
-    title: "Intaglio",
-    description:
-      "Created a mentoring web app for dentists, facilitating seamless mentor-mentee interactions.",
-    getImageSrc: "/intaglio.png",
-    redirectUrl: "https://www.intagl.io/",
-  },
-  {
-    title: "CIPM Application Portal",
-    description:
-      "Designed an interactive system for applicant management, simplifying professional membership applications.",
-    getImageSrc: "/application.png",
-    redirectUrl: "https://application.cipmnigeria.org/",
-  },
-  {
-    title: "Chattered Institute of Personnel Management (CIPM) Exam Portal",
-    description:
-      "Developed a seamless online exam platform for CIPM candidates, optimizing user experience and functionality.",
-    getImageSrc: "/cipm.png",
-    redirectUrl: "https://exams.cipmnigeria.org/",
-  },
-  {
-    title: "Chattered Institute of Personnel Management (CIPM) E-voting App",
-    description:
-      "Built secure voting and admin dashboards to streamline professional election processes. 🔥️",
-    getImageSrc: "/e-voting.png",
-  },
-];
-
-const handleRedirect = (url) => {
-  window.open(url, "_blank");
-};
+export const SectionLabel = ({ children }) => (
+  <Flex align="center" gap={3} mb={5}>
+    <Box w={6} h="1px" bg={palette.accent} />
+    <Text fontSize="xs" letterSpacing="0.18em" textTransform="uppercase" color={palette.accent} fontWeight={600}>
+      {children}
+    </Text>
+  </Flex>
+);
 
 const ProjectsSection = () => {
+  const [featured, ...rest] = projects;
+
   return (
     <FullScreenSection
-      backgroundColor="#14532d"
-      isDarkBackground
-      p={8}
-      alignItems="flex-start"
-      spacing={8}
-      py={{ md: 16 }}
+      id="projects-section"
+      sx={{ scrollMarginTop: "40px" }}
+      innerProps={{ py: { base: 20, md: 32 } }}
     >
-      <Heading as="h1" id="projects-section" fontFamily="Lato">
-        Featured Projects
-      </Heading>
-
-      <Box
-        display="grid"
-        gridTemplateColumns={{ md: "repeat(2,minmax(0,1fr))" }}
-        gridGap={8}
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        justify="space-between"
+        align={{ base: "flex-start", md: "flex-end" }}
+        gap={6}
+        mb={{ base: 10, md: 16 }}
       >
-        {projects.map((project, index) => (
-          <Card
-            key={index}
-            title={project.title}
-            description={project.description}
-            imageSrc={project.getImageSrc}
-            onClick={() => handleRedirect(project.redirectUrl)}
-          />
+        <Reveal>
+          <SectionLabel>Selected work</SectionLabel>
+          <Heading
+            as="h2"
+            fontSize={{ base: "4xl", md: "6xl" }}
+            fontWeight={600}
+            letterSpacing="-0.04em"
+            lineHeight={1}
+          >
+            Things I've{" "}
+            <Text as="span" className="serif" color={palette.accent} fontSize="1.08em">
+              built
+            </Text>
+          </Heading>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <Text maxW="38ch" color={palette.muted} lineHeight={1.7}>
+            A selection of products I've helped design and ship — from
+            business platforms and AI health tools to fintech and exam systems.
+          </Text>
+        </Reveal>
+      </Flex>
+
+      <Reveal mb={{ base: 5, md: 6 }}>
+        <Card index={0} featured {...featured} />
+      </Reveal>
+
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 5, md: 6 }}>
+        {rest.map((project, i) => (
+          <Reveal key={project.title} delay={(i % 2) * 0.08} h="100%">
+            <Card index={i + 1} {...project} />
+          </Reveal>
         ))}
-      </Box>
+      </SimpleGrid>
     </FullScreenSection>
   );
 };
